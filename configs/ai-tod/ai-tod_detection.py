@@ -29,8 +29,8 @@ test_pipeline = [
 ]
 classes = ('airplane', 'bridge', 'storage-tank', 'ship', 'swimming-pool', 'vehicle', 'person', 'wind-mill')
 data = dict(
-    samples_per_gpu=1,
-    workers_per_gpu=1,
+    samples_per_gpu=2,
+    workers_per_gpu=2,
     train=dict(
 		type=dataset_type,
         img_prefix=data_root + 'train/images/',
@@ -47,6 +47,7 @@ data = dict(
 		type=dataset_type,
         img_prefix=data_root + 'test/images',
         classes=classes,
-        ann_file=data_root + 'annotations/aitod_test_v1.json'),
+        ann_file=data_root + 'annotations/aitod_test_v1.json',
 		pipeline=test_pipeline)
+)
 evaluation = dict(interval=1, metric='bbox')

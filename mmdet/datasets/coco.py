@@ -519,6 +519,22 @@ class CocoDataset(CustomDataset):
                     cocoEval.summarize()
                 print_log('\n' + redirect_string.getvalue(), logger=logger)
 
+                if metric_items is None:
+                    metric_items = [
+                        'mAP', 'mAP_50', 'mAP_75', 'mAP_s', 'mAP_m', 'mAP_l'
+                    ]
+
+                for metric_item in metric_items:
+                    key = f'{metric}_{metric_item}'
+                    val = float(
+                        f'{cocoEval.stats[coco_metric_names[metric_item]]:.3f}'
+                    )
+                    eval_results[key] = val
+                ap = cocoEval.stats[:6]
+                eval_results[f'{metric}_mAP_copypaste'] = (
+                    f'{ap[0]:.3f} {ap[1]:.3f} {ap[2]:.3f} {ap[3]:.3f} '
+                    f'{ap[4]:.3f} {ap[5]:.3f}')
+
                 if classwise:  # Compute per-category AP
                     # Compute per-category AP
                     # from https://github.com/facebookresearch/detectron2/
@@ -539,6 +555,7 @@ class CocoDataset(CustomDataset):
                             ap = float('nan')
                         results_per_category.append(
                             (f'{nm["name"]}', f'{float(ap):0.3f}'))
+                        eval_results[f'{metric}_AP_{nm["name"]}'] = f'{float(ap):0.3f}'
 
                     num_columns = min(6, len(results_per_category) * 2)
                     results_flatten = list(
@@ -553,21 +570,9 @@ class CocoDataset(CustomDataset):
                     table = AsciiTable(table_data)
                     print_log('\n' + table.table, logger=logger)
 
-                if metric_items is None:
-                    metric_items = [
-                        'mAP', 'mAP_50', 'mAP_75', 'mAP_s', 'mAP_m', 'mAP_l'
-                    ]
+                
 
-                for metric_item in metric_items:
-                    key = f'{metric}_{metric_item}'
-                    val = float(
-                        f'{cocoEval.stats[coco_metric_names[metric_item]]:.3f}'
-                    )
-                    eval_results[key] = val
-                ap = cocoEval.stats[:6]
-                eval_results[f'{metric}_mAP_copypaste'] = (
-                    f'{ap[0]:.3f} {ap[1]:.3f} {ap[2]:.3f} {ap[3]:.3f} '
-                    f'{ap[4]:.3f} {ap[5]:.3f}')
+                
         if tmp_dir is not None:
             tmp_dir.cleanup()
         return eval_results

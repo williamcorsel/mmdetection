@@ -1,10 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .assigners import (AssignResult, BaseAssigner, CenterRegionAssigner,
-                        MaxIoUAssigner, MaxIoUAssignerCy, RegionAssigner)
+                        MaxIoUAssigner, RegionAssigner)
 from .builder import build_assigner, build_bbox_coder, build_sampler
 from .coder import (BaseBBoxCoder, DeltaXYWHBBoxCoder, DistancePointBBoxCoder,
                     PseudoBBoxCoder, TBLRBBoxCoder)
-from .iou_calculators import BboxOverlaps2D, bbox_overlaps, BboxOverlaps2DCy, bbox_overlaps_cy
+from .iou_calculators import BboxOverlaps2D, bbox_overlaps
 from .samplers import (BaseSampler, CombinedSampler,
                        InstanceBalancedPosSampler, IoUBalancedNegSampler,
                        OHEMSampler, PseudoSampler, RandomSampler,
@@ -15,7 +15,7 @@ from .transforms import (bbox2distance, bbox2result, bbox2roi,
                          distance2bbox, find_inside_bboxes, roi2bbox)
 
 __all__ = [
-    'bbox_overlaps', 'BboxOverlaps2D', 'BboxOverlaps2DCy', 'bbox_overlaps_cy', 'BaseAssigner', 'MaxIoUAssigner', 'MaxIoUAssignerCy',
+    'bbox_overlaps', 'BboxOverlaps2D', 'BaseAssigner', 'MaxIoUAssigner',
     'AssignResult', 'BaseSampler', 'PseudoSampler', 'RandomSampler',
     'InstanceBalancedPosSampler', 'IoUBalancedNegSampler', 'CombinedSampler',
     'OHEMSampler', 'SamplingResult', 'ScoreHLRSampler', 'build_assigner',

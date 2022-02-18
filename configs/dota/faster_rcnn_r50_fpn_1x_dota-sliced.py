@@ -10,6 +10,13 @@ _base_ = [
 model = dict(
     roi_head=dict(
         bbox_head=dict(num_classes=16)
-        ))
+    )
+)
 
 optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
+
+
+data = dict(
+    samples_per_gpu=4,
+    workers_per_gpu=4,
+)

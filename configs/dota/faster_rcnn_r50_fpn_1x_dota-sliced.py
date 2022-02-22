@@ -6,17 +6,23 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 
-# We also need to change the num_classes in head to match the dataset's annotation
+# Change bbox head to classify 16 classes
 model = dict(
     roi_head=dict(
-        bbox_head=dict(num_classes=16)
+        bbox_head=dict(
+            num_classes=16
+        )
     )
 )
 
-optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
-
-
+# Increase batchsize for RTX 3090
 data = dict(
     samples_per_gpu=4,
     workers_per_gpu=4,
+)
+
+# LR for 1 GPU = (0.02 / 8) * (batchsize / 2)
+# Default is 8 GPUs with batchsize 2
+optimizer = dict(
+    lr=0.005,
 )
